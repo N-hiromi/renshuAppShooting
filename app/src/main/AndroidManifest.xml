@@ -12,9 +12,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RenshuAppShooting"
         tools:targetApi="31">
+<!--        exportedは自分のアプリ外からコンポーネントを呼ばないならfalse-->
+<!--        screenOrientatiionは画面の向き固定。portraitで縦向き固定-->
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ResultActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+<!--        <activity></activity>内のクラスが最初に表示される-->
+        <activity
+            android:name=".StartActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

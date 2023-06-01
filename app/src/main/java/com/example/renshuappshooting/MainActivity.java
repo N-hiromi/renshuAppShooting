@@ -2,6 +2,7 @@ package com.example.renshuappshooting;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Insets;
 import android.os.Bundle;
 
@@ -166,7 +167,11 @@ public class MainActivity extends AppCompatActivity {
                 timer = null;
             }
 
-            // 結果画面へ
+            // 結果画面へ画面遷移
+            Intent intent = new Intent(getApplicationContext(), ResultActivity.class);
+            // 結果画面に渡したい値をputExtraで渡す。キー, 値
+            intent.putExtra("SCORE", score);
+            startActivity(intent);
         }
     }
 
@@ -210,5 +215,9 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return true;
+    }
+    @Override
+    public void onBackPressed() {
+        // 戻るボタンを押された時の操作。今回は戻るボタン無効化したいので何も書かない
     }
 }

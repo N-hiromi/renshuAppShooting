@@ -4,6 +4,7 @@ plugins {
     id 'com.android.library' version '8.0.2' apply false
 }
 
+// 非推奨のメソッドを使っていてビルドできない時理由を教えてくれる
 allprojects {
     gradle.projectsEvaluated {
         tasks.withType(JavaCompile) {
