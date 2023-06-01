@@ -50,6 +50,12 @@ public class MainActivity extends AppCompatActivity {
     private float blackX;
     private float blackY;
 
+    // speed
+    private int boxSpeed;
+    private int orangeSpeed;
+    private int pinkSpeed;
+    private int blackSpeed;
+
     // Score
     private int score = 0;
 
@@ -61,10 +67,15 @@ public class MainActivity extends AppCompatActivity {
     private boolean action_flg = false;
     private boolean start_flg = false;
 
+    // Sound
+    private SoundPlayer soundPlayer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // 効果音
+        soundPlayer = new SoundPlayer(this);
 
         scoreLabel = findViewById(R.id.scoreLabel);
         startLabel = findViewById(R.id.startLabel);
@@ -79,6 +90,12 @@ public class MainActivity extends AppCompatActivity {
 
         screenWidth = metrics.getBounds().width();
         screenHeight = metrics.getBounds().height();
+
+        // 画面サイズでスピードの計算
+        boxSpeed = Math.round(screenHeight / 60f);
+        orangeSpeed = Math.round(screenWidth / 60f);
+        pinkSpeed = Math.round(screenWidth / 36f);
+        blackSpeed = Math.round(screenWidth / 45f);
 
         orange.setX(-80.0f);
         orange.setY(-80.0f);
@@ -95,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
         hitCheck();
 
         // Orange
-        orangeX -= 12;
+        orangeX -= orangeSpeed;
         if (orangeX < 0) {
             orangeX = screenWidth + 20;
             orangeY = (float)Math.floor(Math.random() * (frameHeight - orange.getHeight()));
@@ -104,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         orange.setY(orangeY);
 
         // Black
-        blackX -= 16;
+        blackX -= blackSpeed;
         if (blackX < 0) {
             blackX = screenWidth + 10;
             blackY = (float)Math.floor(Math.random() * (frameHeight - black.getHeight()));
@@ -113,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
         black.setY(blackY);
 
         // Pink
-        pinkX -= 20;
+        pinkX -= pinkSpeed;
         if (pinkX < 0) {
             pinkX = screenWidth + 5000;
             pinkY = (float)Math.floor(Math.random() * (frameHeight - pink.getHeight()));
@@ -123,9 +140,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Box
         if (action_flg) {
-            boxY -= 20;
+            boxY -= boxSpeed;
         } else {
-            boxY += 20;
+            boxY += boxSpeed;
         }
 
         if (boxY < 0) boxY = 0;
@@ -145,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
         if (hitStatus(orangeCenterX, orangeCenterY)) {
             orangeX = -10.0f;
             score += 10;
+            soundPlayer.playHitSound();
         }
 
         // Pink
@@ -154,6 +172,7 @@ public class MainActivity extends AppCompatActivity {
         if (hitStatus(pinkCenterX, pinkCenterY)) {
             pinkX = -10.0f;
             score += 30;
+            soundPlayer.playHitSound();
         }
 
         // Black
@@ -165,6 +184,7 @@ public class MainActivity extends AppCompatActivity {
             if (timer != null) {
                 timer.cancel();
                 timer = null;
+                soundPlayer.playOverSound();
             }
 
             // 結果画面へ画面遷移
